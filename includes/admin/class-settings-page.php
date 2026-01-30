@@ -149,11 +149,20 @@ class SPC_Settings_Page {
      * Sanitize and validate settings
      */
     public function sanitize_settings($input) {
+        // Get existing settings to merge with
+        $existing_settings = $this->get_settings();
         $sanitized = array();
         $errors = array();
 
-        // Test Mode (boolean)
-        $sanitized['test_mode'] = isset($input['test_mode']) && $input['test_mode'] === '1';
+        // Test Mode (boolean) - checkbox sends '1' when checked, nothing when unchecked
+        // WordPress Settings API: if checkbox is checked, it sends the value; if unchecked, the key is not in $input
+        if (isset($input['test_mode'])) {
+            // Checkbox was in the form - check if it's checked (value is '1')
+            $sanitized['test_mode'] = ($input['test_mode'] === '1' || $input['test_mode'] === 1 || $input['test_mode'] === true);
+        } else {
+            // Checkbox was not in the form submission, meaning it's unchecked
+            $sanitized['test_mode'] = false;
+        }
 
         // Test Secret Key
         $test_secret = isset($input['test_secret_key']) ? trim($input['test_secret_key']) : '';
