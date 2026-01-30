@@ -27,6 +27,7 @@ class SPC_Settings_Page {
     public function __construct() {
         add_action('admin_menu', array($this, 'add_settings_page'));
         add_action('admin_init', array($this, 'register_settings'));
+        add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
     }
 
     /**
@@ -255,6 +256,7 @@ class SPC_Settings_Page {
 
         $settings = $this->get_settings();
         $is_test_mode = !empty($settings['test_mode']);
+        $shortcode = '[spc_embedded_checkout]';
         ?>
         <div class="wrap">
             <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
@@ -269,6 +271,29 @@ class SPC_Settings_Page {
                 </div>
             <?php endif; ?>
 
+            <div class="spc-shortcode-section" style="background: #fff; border: 1px solid #ccd0d4; box-shadow: 0 1px 1px rgba(0,0,0,.04); padding: 20px; margin: 20px 0;">
+                <h2 style="margin-top: 0;"><?php esc_html_e('Shortcode', 'spc'); ?></h2>
+                <p style="margin-bottom: 15px;">
+                    <?php esc_html_e('Copy the shortcode below and paste it into any page or post where you want the checkout form to appear.', 'spc'); ?>
+                </p>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <input type="text" 
+                           id="spc-shortcode-input" 
+                           value="<?php echo esc_attr($shortcode); ?>" 
+                           readonly 
+                           style="flex: 1; padding: 8px 12px; background-color: #f0f0f1; border: 1px solid #8c8f94; color: #50575e; font-family: monospace; font-size: 14px; cursor: text;">
+                    <button type="button" 
+                            id="spc-copy-shortcode" 
+                            class="button button-secondary"
+                            data-shortcode="<?php echo esc_attr($shortcode); ?>">
+                        <?php esc_html_e('Copy Shortcode', 'spc'); ?>
+                    </button>
+                </div>
+                <p id="spc-copy-feedback" style="margin: 10px 0 0 0; color: #00a32a; display: none; font-weight: 600;">
+                    <?php esc_html_e('✓ Shortcode copied to clipboard!', 'spc'); ?>
+                </p>
+            </div>
+
             <form action="options.php" method="post">
                 <?php
                 settings_fields(self::OPTION_GROUP);
@@ -278,6 +303,74 @@ class SPC_Settings_Page {
             </form>
         </div>
         <?php
+    }
+
+    /**
+     * Enqueue admin scripts and styles
+     */
+    public function enqueue_admin_scripts($hook) {
+        // Only load on our settings page
+        if ($hook !== 'settings_page_spc-settings') {
+            return;
+        }
+        
+        // Add inline script for copy functionality
+        $script = "
+        jQuery(document).ready(function($) {
+            $('#spc-copy-shortcode').on('click', function(e) {
+                e.preventDefault();
+                var shortcodeInput = document.getElementById('spc-shortcode-input');
+                var feedback = document.getElementById('spc-copy-feedback');
+                var shortcode = shortcodeInput.value;
+                
+                // Try modern Clipboard API first
+                if (navigator.clipboard && window.isSecureContext) {
+                    navigator.clipboard.writeText(shortcode).then(function() {
+                        showCopyFeedback(feedback, $(this));
+                    }.bind(this)).catch(function(err) {
+                        // Fallback to execCommand
+                        fallbackCopy(shortcodeInput, feedback, $(this));
+                    }.bind(this));
+                } else {
+                    // Fallback to execCommand for older browsers
+                    fallbackCopy(shortcodeInput, feedback, $(this));
+                }
+            });
+            
+            function fallbackCopy(input, feedback, button) {
+                input.select();
+                input.setSelectionRange(0, 99999); // For mobile devices
+                
+                try {
+                    var successful = document.execCommand('copy');
+                    if (successful) {
+                        showCopyFeedback(feedback, button);
+                    } else {
+                        alert('" . esc_js(__('Please manually copy the shortcode.', 'spc')) . "');
+                    }
+                } catch (err) {
+                    alert('" . esc_js(__('Please manually copy the shortcode.', 'spc')) . "');
+                }
+            }
+            
+            function showCopyFeedback(feedback, button) {
+                // Show feedback message
+                feedback.style.display = 'block';
+                setTimeout(function() {
+                    feedback.style.display = 'none';
+                }, 3000);
+                
+                // Change button text temporarily
+                var originalText = button.text();
+                button.text('" . esc_js(__('Copied!', 'spc')) . "');
+                setTimeout(function() {
+                    button.text(originalText);
+                }, 2000);
+            }
+        });
+        ";
+        
+        wp_add_inline_script('jquery', $script);
     }
 
     /**
