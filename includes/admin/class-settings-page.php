@@ -285,16 +285,17 @@ class SPC_Settings_Page {
                 <p style="margin-bottom: 15px;">
                     <?php esc_html_e('Copy the shortcode below and paste it into any page or post where you want the checkout form to appear.', 'spc'); ?>
                 </p>
-                <div style="display: flex; gap: 10px; align-items: center;">
+                <div style="display: flex; gap: 10px; align-items: stretch;">
                     <input type="text" 
                            id="spc-shortcode-input" 
                            value="<?php echo esc_attr($shortcode); ?>" 
                            readonly 
-                           style="flex: 1; padding: 8px 12px; background-color: #f0f0f1; border: 1px solid #8c8f94; color: #50575e; font-family: monospace; font-size: 14px; cursor: text;">
+                           style="flex: 1; padding: 8px 12px; background-color: #f0f0f1; border: 1px solid #8c8f94; color: #50575e; font-family: monospace; font-size: 14px; cursor: text; box-sizing: border-box; height: 38px; line-height: 1.5;">
                     <button type="button" 
                             id="spc-copy-shortcode" 
                             class="button button-secondary"
-                            data-shortcode="<?php echo esc_attr($shortcode); ?>">
+                            data-shortcode="<?php echo esc_attr($shortcode); ?>"
+                            style="height: 38px; box-sizing: border-box; padding: 8px 12px; line-height: 1.5;">
                         <?php esc_html_e('Copy Shortcode', 'spc'); ?>
                     </button>
                 </div>
