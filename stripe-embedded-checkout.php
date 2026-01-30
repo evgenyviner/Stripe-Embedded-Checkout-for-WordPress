@@ -195,7 +195,7 @@ function spc_add_plugin_row_meta($links, $file) {
         return $links;
     }
     
-    $support_link = '<a href="https://buymeacoffee.com/evgenyviner" target="_blank" rel="noopener noreferrer">' . __('Support the Developer', 'spc') . '</a>';
+    $support_link = '<a href="https://linktr.ee/evgenyviner" target="_blank" rel="noopener noreferrer">' . __('About the Developer', 'spc') . '</a>';
     $links[] = $support_link;
     
     return $links;
