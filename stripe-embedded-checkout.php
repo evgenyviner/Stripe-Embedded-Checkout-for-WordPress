@@ -144,6 +144,5 @@ add_action('wp_enqueue_scripts', function () {
   });
   
   add_shortcode('secwp_embedded_checkout', function () {
-    return 'SHORTCODE-OK <div id="secwp"></div>';
+    return '<div id="secwp"></div>';
   });
-  

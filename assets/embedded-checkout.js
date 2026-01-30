@@ -1,5 +1,5 @@
 (async function () {
-    const container = document.querySelector("#stripe-embedded-checkout");
+    const container = document.querySelector("#secwp");
     if (!container) return;
   
     if (!window.ZoraStripe?.publishableKey) {
@@ -24,7 +24,7 @@
       const clientSecret = await fetchClientSecret();
   
       const checkout = await stripe.initEmbeddedCheckout({ clientSecret });
-      checkout.mount("#stripe-embedded-checkout");
+      checkout.mount("#secwp");
     } catch (e) {
       console.error(e);
       container.innerHTML = "Could not load checkout. Please try again.";
