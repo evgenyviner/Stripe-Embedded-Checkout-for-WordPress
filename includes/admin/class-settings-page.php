@@ -35,8 +35,8 @@ class SPC_Settings_Page {
      */
     public function add_settings_page() {
         add_options_page(
-            __('Simple Payment Checkout', 'spc'),
-            __('Simple Payment Checkout', 'spc'),
+            __('Simple Payment Checkout', 'simple-payment-checkout'),
+            __('Simple Payment Checkout', 'simple-payment-checkout'),
             'manage_options',
             'spc-settings',
             array($this, 'render_settings_page')
@@ -67,14 +67,14 @@ class SPC_Settings_Page {
         // Mode Settings Section
         add_settings_section(
             'spc_mode_section',
-            __('Mode Settings', 'spc'),
+            __('Mode Settings', 'simple-payment-checkout'),
             array($this, 'render_mode_section_description'),
             'spc-settings'
         );
 
         add_settings_field(
             'test_mode',
-            __('Test Mode', 'spc'),
+            __('Test Mode', 'simple-payment-checkout'),
             array($this, 'render_test_mode_field'),
             'spc-settings',
             'spc_mode_section'
@@ -83,14 +83,14 @@ class SPC_Settings_Page {
         // API Keys Section
         add_settings_section(
             'spc_keys_section',
-            __('API Keys', 'spc'),
+            __('API Keys', 'simple-payment-checkout'),
             array($this, 'render_keys_section_description'),
             'spc-settings'
         );
 
         add_settings_field(
             'test_publishable_key',
-            __('Test Publishable Key', 'spc'),
+            __('Test Publishable Key', 'simple-payment-checkout'),
             array($this, 'render_test_publishable_key_field'),
             'spc-settings',
             'spc_keys_section'
@@ -98,7 +98,7 @@ class SPC_Settings_Page {
 
         add_settings_field(
             'test_secret_key',
-            __('Test Secret Key', 'spc'),
+            __('Test Secret Key', 'simple-payment-checkout'),
             array($this, 'render_test_secret_key_field'),
             'spc-settings',
             'spc_keys_section'
@@ -106,7 +106,7 @@ class SPC_Settings_Page {
 
         add_settings_field(
             'live_publishable_key',
-            __('Live Publishable Key', 'spc'),
+            __('Live Publishable Key', 'simple-payment-checkout'),
             array($this, 'render_live_publishable_key_field'),
             'spc-settings',
             'spc_keys_section'
@@ -114,7 +114,7 @@ class SPC_Settings_Page {
 
         add_settings_field(
             'live_secret_key',
-            __('Live Secret Key', 'spc'),
+            __('Live Secret Key', 'simple-payment-checkout'),
             array($this, 'render_live_secret_key_field'),
             'spc-settings',
             'spc_keys_section'
@@ -123,14 +123,14 @@ class SPC_Settings_Page {
         // Checkout Configuration Section
         add_settings_section(
             'spc_checkout_section',
-            __('Checkout Configuration', 'spc'),
+            __('Checkout Configuration', 'simple-payment-checkout'),
             array($this, 'render_checkout_section_description'),
             'spc-settings'
         );
 
         add_settings_field(
             'return_url',
-            __('Return URL', 'spc'),
+            __('Return URL', 'simple-payment-checkout'),
             array($this, 'render_return_url_field'),
             'spc-settings',
             'spc_checkout_section'
@@ -138,7 +138,7 @@ class SPC_Settings_Page {
 
         add_settings_field(
             'price_id',
-            __('Product Price ID', 'spc'),
+            __('Product Price ID', 'simple-payment-checkout'),
             array($this, 'render_price_id_field'),
             'spc-settings',
             'spc_checkout_section'
@@ -167,35 +167,35 @@ class SPC_Settings_Page {
         // Test Secret Key
         $test_secret = isset($input['test_secret_key']) ? trim($input['test_secret_key']) : '';
         if (!empty($test_secret) && !$this->validate_secret_key($test_secret, 'test')) {
-            $errors[] = __('Test Secret Key must start with "sk_test_"', 'spc');
+            $errors[] = __('Test Secret Key must start with "sk_test_"', 'simple-payment-checkout');
         }
         $sanitized['test_secret_key'] = $test_secret;
 
         // Test Publishable Key
         $test_publishable = isset($input['test_publishable_key']) ? trim($input['test_publishable_key']) : '';
         if (!empty($test_publishable) && !$this->validate_publishable_key($test_publishable, 'test')) {
-            $errors[] = __('Test Publishable Key must start with "pk_test_"', 'spc');
+            $errors[] = __('Test Publishable Key must start with "pk_test_"', 'simple-payment-checkout');
         }
         $sanitized['test_publishable_key'] = $test_publishable;
 
         // Live Secret Key
         $live_secret = isset($input['live_secret_key']) ? trim($input['live_secret_key']) : '';
         if (!empty($live_secret) && !$this->validate_secret_key($live_secret, 'live')) {
-            $errors[] = __('Live Secret Key must start with "sk_live_"', 'spc');
+            $errors[] = __('Live Secret Key must start with "sk_live_"', 'simple-payment-checkout');
         }
         $sanitized['live_secret_key'] = $live_secret;
 
         // Live Publishable Key
         $live_publishable = isset($input['live_publishable_key']) ? trim($input['live_publishable_key']) : '';
         if (!empty($live_publishable) && !$this->validate_publishable_key($live_publishable, 'live')) {
-            $errors[] = __('Live Publishable Key must start with "pk_live_"', 'spc');
+            $errors[] = __('Live Publishable Key must start with "pk_live_"', 'simple-payment-checkout');
         }
         $sanitized['live_publishable_key'] = $live_publishable;
 
         // Return URL
         $return_url = isset($input['return_url']) ? trim($input['return_url']) : '';
         if (!empty($return_url) && !filter_var($return_url, FILTER_VALIDATE_URL)) {
-            $errors[] = __('Return URL must be a valid URL', 'spc');
+            $errors[] = __('Return URL must be a valid URL', 'simple-payment-checkout');
         }
         $sanitized['return_url'] = esc_url_raw($return_url);
 
@@ -215,7 +215,7 @@ class SPC_Settings_Page {
                 add_settings_error(
                     self::OPTION_NAME,
                     'missing_test_keys',
-                    __('Test mode is enabled but test keys are missing.', 'spc'),
+                    __('Test mode is enabled but test keys are missing.', 'simple-payment-checkout'),
                     'warning'
                 );
             }
@@ -224,7 +224,7 @@ class SPC_Settings_Page {
                 add_settings_error(
                     self::OPTION_NAME,
                     'missing_live_keys',
-                    __('Live mode is enabled but live keys are missing.', 'spc'),
+                    __('Live mode is enabled but live keys are missing.', 'simple-payment-checkout'),
                     'warning'
                 );
             }
@@ -272,18 +272,18 @@ class SPC_Settings_Page {
 
             <?php if ($is_test_mode) : ?>
                 <div class="notice notice-info">
-                    <p><strong><?php esc_html_e('Test Mode is currently active.', 'spc'); ?></strong></p>
+                    <p><strong><?php esc_html_e('Test Mode is currently active.', 'simple-payment-checkout'); ?></strong></p>
                 </div>
             <?php else : ?>
                 <div class="notice notice-warning">
-                    <p><strong><?php esc_html_e('Live Mode is currently active.', 'spc'); ?></strong></p>
+                    <p><strong><?php esc_html_e('Live Mode is currently active.', 'simple-payment-checkout'); ?></strong></p>
                 </div>
             <?php endif; ?>
 
             <div class="spc-shortcode-section" style="background: #fff; border: 1px solid #ccd0d4; box-shadow: 0 1px 1px rgba(0,0,0,.04); padding: 20px; margin: 20px 0;">
-                <h2 style="margin-top: 0;"><?php esc_html_e('Shortcode', 'spc'); ?></h2>
+                <h2 style="margin-top: 0;"><?php esc_html_e('Shortcode', 'simple-payment-checkout'); ?></h2>
                 <p style="margin-bottom: 15px;">
-                    <?php esc_html_e('Copy the shortcode below and paste it into any page or post where you want the checkout form to appear.', 'spc'); ?>
+                    <?php esc_html_e('Copy the shortcode below and paste it into any page or post where you want the checkout form to appear.', 'simple-payment-checkout'); ?>
                 </p>
                 <div style="display: flex; gap: 10px; align-items: stretch;">
                     <input type="text" 
@@ -296,11 +296,11 @@ class SPC_Settings_Page {
                             class="button button-secondary"
                             data-shortcode="<?php echo esc_attr($shortcode); ?>"
                             style="height: 38px; box-sizing: border-box; padding: 8px 12px; line-height: 1.5;">
-                        <?php esc_html_e('Copy Shortcode', 'spc'); ?>
+                        <?php esc_html_e('Copy Shortcode', 'simple-payment-checkout'); ?>
                     </button>
                 </div>
                 <p id="spc-copy-feedback" style="margin: 10px 0 0 0; color: #00a32a; display: none; font-weight: 600;">
-                    <?php esc_html_e('✓ Shortcode copied to clipboard!', 'spc'); ?>
+                    <?php esc_html_e('✓ Shortcode copied to clipboard!', 'simple-payment-checkout'); ?>
                 </p>
             </div>
 
@@ -308,7 +308,7 @@ class SPC_Settings_Page {
                 <?php
                 settings_fields(self::OPTION_GROUP);
                 do_settings_sections('spc-settings');
-                submit_button(__('Save Settings', 'spc'));
+                submit_button(__('Save Settings', 'simple-payment-checkout'));
                 ?>
             </form>
             
@@ -316,9 +316,9 @@ class SPC_Settings_Page {
                 <p>
                     <?php
 printf(
-    __('Enjoying %s? %s', 'spc'),
-    '<strong>' . esc_html__('Simple Payment Checkout', 'spc') . '</strong>',
-    '<a href="https://buymeacoffee.com/evgenyviner" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">☕ ' . esc_html__('Buy me a coffee', 'spc') . '</a>'
+    __('Enjoying %s? %s', 'simple-payment-checkout'),
+    '<strong>' . esc_html__('Simple Payment Checkout', 'simple-payment-checkout') . '</strong>',
+    '<a href="https://buymeacoffee.com/evgenyviner" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">☕ ' . esc_html__('Buy me a coffee', 'simple-payment-checkout') . '</a>'
 );                    ?>
                 </p>
             </div>
@@ -367,10 +367,10 @@ printf(
                     if (successful) {
                         showCopyFeedback(feedback, button);
                     } else {
-                        alert('" . esc_js(__('Please manually copy the shortcode.', 'spc')) . "');
+                        alert('" . esc_js(__('Please manually copy the shortcode.', 'simple-payment-checkout')) . "');
                     }
                 } catch (err) {
-                    alert('" . esc_js(__('Please manually copy the shortcode.', 'spc')) . "');
+                    alert('" . esc_js(__('Please manually copy the shortcode.', 'simple-payment-checkout')) . "');
                 }
             }
             
@@ -383,7 +383,7 @@ printf(
                 
                 // Change button text temporarily
                 var originalText = button.text();
-                button.text('" . esc_js(__('Copied!', 'spc')) . "');
+                button.text('" . esc_js(__('Copied!', 'simple-payment-checkout')) . "');
                 setTimeout(function() {
                     button.text(originalText);
                 }, 2000);
@@ -416,7 +416,7 @@ printf(
      * Render mode section description
      */
     public function render_mode_section_description() {
-        echo '<p>' . esc_html__('Choose whether to use test or live Stripe keys.', 'spc') . '</p>';
+        echo '<p>' . esc_html__('Choose whether to use test or live Stripe keys.', 'simple-payment-checkout') . '</p>';
     }
 
     /**
@@ -428,10 +428,10 @@ printf(
         ?>
         <label>
             <input type="checkbox" name="<?php echo esc_attr(self::OPTION_NAME); ?>[test_mode]" value="1" <?php checked($test_mode); ?>>
-            <?php esc_html_e('Enable Test Mode', 'spc'); ?>
+            <?php esc_html_e('Enable Test Mode', 'simple-payment-checkout'); ?>
         </label>
         <p class="description">
-            <?php esc_html_e('When enabled, test keys will be used. Uncheck to use live keys.', 'spc'); ?>
+            <?php esc_html_e('When enabled, test keys will be used. Uncheck to use live keys.', 'simple-payment-checkout'); ?>
         </p>
         <?php
     }
@@ -440,7 +440,7 @@ printf(
      * Render keys section description
      */
     public function render_keys_section_description() {
-        echo '<p>' . esc_html__('Enter your Stripe API keys. You can find these in your Stripe Dashboard under Developers > API keys.', 'spc') . '</p>';
+        echo '<p>' . esc_html__('Enter your Stripe API keys. You can find these in your Stripe Dashboard under Developers > API keys.', 'simple-payment-checkout') . '</p>';
     }
 
     /**
@@ -456,7 +456,7 @@ printf(
                class="regular-text"
                placeholder="sk_test_...">
         <p class="description">
-            <?php esc_html_e('Your test secret key (starts with sk_test_)', 'spc'); ?>
+            <?php esc_html_e('Your test secret key (starts with sk_test_)', 'simple-payment-checkout'); ?>
         </p>
         <?php
     }
@@ -474,7 +474,7 @@ printf(
                class="regular-text"
                placeholder="pk_test_...">
         <p class="description">
-            <?php esc_html_e('Your test publishable key (starts with pk_test_)', 'spc'); ?>
+            <?php esc_html_e('Your test publishable key (starts with pk_test_)', 'simple-payment-checkout'); ?>
         </p>
         <?php
     }
@@ -492,7 +492,7 @@ printf(
                class="regular-text"
                placeholder="sk_live_...">
         <p class="description">
-            <?php esc_html_e('Your live secret key (starts with sk_live_)', 'spc'); ?>
+            <?php esc_html_e('Your live secret key (starts with sk_live_)', 'simple-payment-checkout'); ?>
         </p>
         <?php
     }
@@ -510,7 +510,7 @@ printf(
                class="regular-text"
                placeholder="pk_live_...">
         <p class="description">
-            <?php esc_html_e('Your live publishable key (starts with pk_live_)', 'spc'); ?>
+            <?php esc_html_e('Your live publishable key (starts with pk_live_)', 'simple-payment-checkout'); ?>
         </p>
         <?php
     }
@@ -519,7 +519,7 @@ printf(
      * Render checkout section description
      */
     public function render_checkout_section_description() {
-        echo '<p>' . esc_html__('Configure the checkout behavior and product settings.', 'spc') . '</p>';
+        echo '<p>' . esc_html__('Configure the checkout behavior and product settings.', 'simple-payment-checkout') . '</p>';
     }
 
     /**
@@ -536,9 +536,9 @@ printf(
                class="regular-text"
                placeholder="<?php echo esc_attr($default_url); ?>">
         <p class="description">
-            <?php esc_html_e('URL where customers will be redirected after checkout. Use {CHECKOUT_SESSION_ID} as a placeholder.', 'spc'); ?>
+            <?php esc_html_e('URL where customers will be redirected after checkout. Use {CHECKOUT_SESSION_ID} as a placeholder.', 'simple-payment-checkout'); ?>
             <?php if (empty($value)) : ?>
-                <br><strong><?php esc_html_e('Suggested:', 'spc'); ?></strong> <code><?php echo esc_html($default_url); ?></code>
+                <br><strong><?php esc_html_e('Suggested:', 'simple-payment-checkout'); ?></strong> <code><?php echo esc_html($default_url); ?></code>
             <?php endif; ?>
         </p>
         <?php
@@ -557,7 +557,7 @@ printf(
                class="regular-text"
                placeholder="price_...">
         <p class="description">
-            <?php esc_html_e('The Stripe Price ID for the product you want to sell. You can find this in your Stripe Dashboard under Products.', 'spc'); ?>
+            <?php esc_html_e('The Stripe Price ID for the product you want to sell. You can find this in your Stripe Dashboard under Products.', 'simple-payment-checkout'); ?>
         </p>
         <?php
     }
